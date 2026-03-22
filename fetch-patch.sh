@@ -8,6 +8,9 @@ if [ -z "$INPUT" ]; then
     exit 1
 fi
 
+killall thunderbird 2>/dev/null || true
+sleep 0.42
+
 if [[ "$INPUT" == http* ]]; then
     MSG_ID=$(echo "$INPUT" | sed -E 's|.*lore\.kernel\.org/[^/]+/([^/]+).*|\1|')
 else
@@ -30,8 +33,12 @@ if [ $? -ne 0 ]; then
 fi
 
 gunzip -f "/tmp/${NAME}.mbox.gz"
+DIR="/home/malon/Desktop/thunderbird/common/.thunderbird/qy2c99g2.default/Mail/Local Folders"
 
-rm -f "/home/malon/Desktop/thunderbird/common/.thunderbird/qy2c99g2.default/Mail/Local Folders/{%NAME}.msf"
 
-mv "/tmp/${NAME}.mbox" "/home/malon/Desktop/thunderbird/common/.thunderbird/qy2c99g2.default/Mail/Local Folders/$NAME"
+rm -f "$DIR/{%NAME}.msf"
+
+mv "/tmp/${NAME}.mbox" "$DIR/$NAME"
+
+nohup thunderbird >/dev/null 2>&1 & disown
 
