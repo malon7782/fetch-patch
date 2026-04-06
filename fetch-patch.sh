@@ -8,6 +8,10 @@ if [ -z "$INPUT" ]; then
     exit 1
 fi
 
+find "/home/malon/Desktop/thunderbird/common/.thunderbird/qy2c99g2.default/Mail/Local Folders" -maxdepth 1 -type f -mtime +4 ! -name "*.msf" | while read -r f; do
+    rm -f "$f" "${f}.msf"
+done
+
 killall thunderbird 2>/dev/null || true
 sleep 0.42
 
